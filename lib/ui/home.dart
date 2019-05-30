@@ -7,6 +7,47 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   @override
+
+  List<Widget> people = [];
+
+  List<Widget> _buildList() {
+    for (var i = 0; i < 5; i++) {
+      people.add(
+          Draggable(
+            axis: Axis.horizontal,
+            feedback: Container(
+              margin: EdgeInsets.all(7),
+              width: 400,
+              height: 630,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(20))
+              ),
+            ),
+            child: Container(
+              margin: EdgeInsets.all(7),
+              width: 400,
+              height: 630,
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.all(Radius.circular(20))
+              ),
+            ),
+            childWhenDragging: Container(),
+            onDragEnd: (drag) {
+              if(drag.offset.direction > 2) {
+                print('esquerda');
+              } else if (drag.offset.direction < 1) {
+                print('direita');
+              }
+            },
+          )
+      );
+    }
+
+    return people;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -35,28 +76,7 @@ class _HomeState extends State<Home> {
           child: Center(
             child: Column(
               children: <Widget>[
-                Draggable(
-//                  axis: Axis.horizontal,
-                  feedback: Container(
-                    margin: EdgeInsets.all(7),
-                    width: 400,
-                    height: 630,
-                    decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
-                  ),
-                  child: Container(
-                    margin: EdgeInsets.all(7),
-                    width: 400,
-                    height: 630,
-                    decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
-                  ),
-                  childWhenDragging: Container(),
-                ),
+                Stack(children: _buildList()),
                 Row()
               ],
             ),
