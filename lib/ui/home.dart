@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tinder/ui/widgets/dragging.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,38 +11,33 @@ class _HomeState extends State<Home> {
 
   List<Widget> people = [];
 
+  @override
+  void initState() {
+    _buildList();
+  }
+
   List<Widget> _buildList() {
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 2; i++) {
       people.add(
-          Draggable(
-            axis: Axis.horizontal,
-            feedback: Container(
-              margin: EdgeInsets.all(7),
-              width: 400,
-              height: 630,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20))
-              ),
+        Dragging(
+          child: Container(
+            margin: EdgeInsets.all(7),
+            width: 400,
+            height: 630,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage('https://santopapo.com.br/wp-content/uploads/7-Dicas-para-conquistar-uma-mulher-especial.jpg')
+              )
             ),
-            child: Container(
-              margin: EdgeInsets.all(7),
-              width: 400,
-              height: 630,
-              decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.all(Radius.circular(20))
-              ),
-            ),
-            childWhenDragging: Container(),
-            onDragEnd: (drag) {
-              if(drag.offset.direction > 2) {
-                print('esquerda');
-              } else if (drag.offset.direction < 1) {
-                print('direita');
-              }
-            },
-          )
+          ),
+          callback: (teste) {
+//            print(teste);
+          },
+          key: Key('card$i'),
+        )
       );
     }
 
@@ -57,7 +53,7 @@ class _HomeState extends State<Home> {
             color: Colors.grey,
             size: 34,
           ),
-          onPressed: () => print('Dale'),
+          onPressed: () => print('profile'),
         ),
         actions: <Widget>[
           IconButton(
@@ -66,7 +62,7 @@ class _HomeState extends State<Home> {
               color: Colors.grey,
               size: 34,
             ),
-            onPressed: () => print('a'),
+            onPressed: () => print('messages'),
           )
         ],
       ),
@@ -76,7 +72,7 @@ class _HomeState extends State<Home> {
           child: Center(
             child: Column(
               children: <Widget>[
-                Stack(children: _buildList()),
+                Stack(children: people),
                 Row()
               ],
             ),
