@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tinder/ui/widgets/dragging.dart';
@@ -12,6 +13,7 @@ class _HomeState extends State<Home> {
   @override
 
   List<Widget> people = [];
+  int _topPicks = 0;
 
   @override
   void initState() {
@@ -63,6 +65,10 @@ class _HomeState extends State<Home> {
   }
 
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -73,6 +79,52 @@ class _HomeState extends State<Home> {
           ),
           onPressed: () => print('profile'),
         ),
+        title: Container(
+          height: 45,
+          width: 85,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(30))
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                height: 40,
+                width: 40,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    child: Icon(Icons.home),
+                    backgroundColor: _topPicks == 0 ? Colors.white : Colors.grey,
+                    elevation: _topPicks == 0 ? 10 : 0,
+                    onPressed: () {
+                      setState(() {
+                        _topPicks = 0;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                height: 40,
+                width: 40,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    child: Icon(Icons.home),
+                    backgroundColor: _topPicks == 1 ? Colors.white : Colors.grey,
+                    elevation: _topPicks == 1 ? 10 : 0,
+                    onPressed: () {
+                      setState(() {
+                        _topPicks = 1;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -125,9 +177,8 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       Container(
-                        height: 55,
-                        width: 55,
-                        padding: EdgeInsets.only(bottom: 8),
+                        height: 45,
+                        width: 45,
                         child: FittedBox(
                           child: FloatingActionButton(
                             child: Icon(Icons.star, color: Colors.blue),
